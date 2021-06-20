@@ -5,9 +5,11 @@
 package it.polito.tdp.PremierLeague;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.PremierLeague.model.Model;
+import it.polito.tdp.PremierLeague.model.Opposite;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,6 +47,28 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
 
+    	txtResult.clear();
+    	
+    	String gol = this.txtGoals.getText();
+    	Double golFatti;
+    	
+    	if(gol==""){
+    		this.txtResult.setText("ERRORE: non hai inserito il numero minimo di gol");
+    		return;
+    	}
+    	
+    	try {
+    		golFatti = Double.parseDouble(gol);
+    	}
+    	catch(NumberFormatException e) {
+    		this.txtResult.setText("ERRORE: formato del numero minimo di gol non corretto");
+    		return;
+    	}
+    	
+    	model.creaGrafo(golFatti);
+    	txtResult.appendText("#ARCHI: "+model.getNumArchi()+"\n");
+    	txtResult.appendText("#VERTICI: "+model.getNumVertici()+"\n\n");
+    	
     }
 
     @FXML
@@ -54,7 +78,14 @@ public class FXMLController {
 
     @FXML
     void doTopPlayer(ActionEvent event) {
-
+    	
+    	txtResult.appendText("TOP PLAYER\n");
+    	txtResult.appendText(model.topPlayer().toString()+"\n\n");
+    	
+    	List<Opposite> l = model.giocatoriBattuti();
+    	for(Opposite o : l) {
+    		txtResult.appendText(o.toString() +"\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
