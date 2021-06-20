@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.PremierLeague.model.Model;
 import it.polito.tdp.PremierLeague.model.Opposite;
+import it.polito.tdp.PremierLeague.model.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -73,7 +74,31 @@ public class FXMLController {
 
     @FXML
     void doDreamTeam(ActionEvent event) {
-
+    	
+    	String gio = this.txtK.getText();
+    	Integer giocatori;
+    	
+    	if(gio==""){
+    		this.txtResult.setText("ERRORE: non hai inserito il numero di giocatori");
+    		return;
+    	}
+    	
+    	try {
+    		giocatori = Integer.parseInt(gio);
+    	}
+    	catch(NumberFormatException e) {
+    		this.txtResult.setText("ERRORE: formato del numero di giocatori non corretto");
+    		return;
+    	}
+    	
+    	List<Player> result = model.dreamTeam(giocatori);
+    	txtResult.appendText("DREAM TEAM:\n");
+    	
+    	for(Player p : result) {
+    		this.txtResult.appendText(p.toString()+"\n");
+    	}
+    	
+    	
     }
 
     @FXML
@@ -86,6 +111,7 @@ public class FXMLController {
     	for(Opposite o : l) {
     		txtResult.appendText(o.toString() +"\n");
     	}
+    	txtResult.appendText("\n\n");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
